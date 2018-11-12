@@ -63,6 +63,30 @@ func (n *Notifier) NodeStatus(id int) (*Status, error) {
 	return NewStatus(id, n.Nodes[id], syncing, latest), nil
 }
 
+func (n *Notifier) OneShot() {
+	// Fetch
+	statuses := []*Status{}
+	for id, _ := range n.Nodes {
+		log.Infof("Fetching node %d status", id+1)
+
+		status, err := n.NodeStatus(id)
+		if err != nil {
+			log.Errorf("Error fetching node %d status: %s", id+1, err.Error())
+		}
+
+		statuses = append(statuses, status)
+	}
+
+	// Send
+	for id, status := range statuses {
+		log.Infof("Sending status %d", id+1)
+
+		if err := status.Send(n.WebhookURL); err != nil {
+			log.Errorf("Error sending node %d status: %s", id+1, err.Error())
+		}
+	}
+}
+
 func (n *Notifier) Run() {
 	ticker := time.NewTicker(time.Duration(n.Interval) * time.Millisecond)
 	quit := make(chan struct{})
@@ -71,29 +95,7 @@ func (n *Notifier) Run() {
 		select {
 		case <-ticker.C:
 			log.Info("Notifier tick")
-
-			// Fetch
-			statuses := []*Status{}
-			for id, _ := range n.Nodes {
-				log.Infof("Fetching node status %d", id+1)
-
-				status, err := n.NodeStatus(id)
-				if err != nil {
-					log.Errorf("Error fetching node status %d: %s", id+1, err.Error())
-				}
-
-				statuses = append(statuses, status)
-			}
-
-			// Send
-			for id, status := range statuses {
-				log.Infof("Sending status %d", id+1)
-
-				if err := status.Send(n.WebhookURL); err != nil {
-					log.Errorf("Error sending nstatus %d: %s", id+1, err.Error())
-				}
-			}
-
+			n.OneShot()
 		case <-quit:
 			ticker.Stop()
 			return

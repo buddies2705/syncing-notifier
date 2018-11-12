@@ -15,6 +15,10 @@ func main() {
 	app.Usage = "Sends Slack incoming webhook about Geth node syncing status"
 	app.Version = "1.0.0"
 	app.Flags = []cli.Flag{
+		cli.BoolFlag{
+			Name:  "oneshot",
+			Usage: "send a single notification and quit",
+		},
 		cli.UintFlag{
 			Name:  "interval",
 			Usage: "notifications interval (ms)",
@@ -32,6 +36,7 @@ func main() {
 
 	app.Action = func(ctx *cli.Context) error {
 		// Parse flags
+		oneshot := ctx.Bool("oneshot")
 		interval := ctx.Uint("interval")
 		webhookURL := ctx.String("webhook-url")
 		nodes := ctx.StringSlice("nodes")
@@ -41,7 +46,12 @@ func main() {
 			return err
 		}
 
-		notifier.Run()
+		if oneshot {
+			notifier.OneShot()
+		} else {
+			notifier.Run()
+		}
+
 		return nil
 	}
 

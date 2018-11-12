@@ -32,27 +32,51 @@ func (s *Status) Send(url string) error {
 	// Pick pretext and color
 	color := "#2ecc40"
 	text := "Node is synchronized"
+	fields := []slack.AttachmentField{
+		slack.AttachmentField{
+			Title: "Latest Block",
+			Value: s.Block.Number().String(),
+			Short: true,
+		},
+		slack.AttachmentField{
+			Title: "Received At",
+			Value: prettyTime.Format(time.Unix(s.Block.Time().Int64(), 0)),
+			Short: true,
+		},
+	}
+
 	if s.Syncing != nil {
 		color = "#0074d9"
-		text = fmt.Sprintf("Syncing block %d of %d", s.Syncing.CurrentBlock, s.Syncing.HighestBlock)
+		text = "Syncing in progress"
+		fields = []slack.AttachmentField{
+			slack.AttachmentField{
+				Title: "Current Block",
+				Value: strconv.FormatUint(s.Syncing.CurrentBlock, 10),
+				Short: true,
+			},
+			slack.AttachmentField{
+				Title: "Highest Block",
+				Value: strconv.FormatUint(s.Syncing.HighestBlock, 10),
+				Short: true,
+			},
+			slack.AttachmentField{
+				Title: "Pulled States",
+				Value: strconv.FormatUint(s.Syncing.PulledStates, 10),
+				Short: true,
+			},
+			slack.AttachmentField{
+				Title: "Known States",
+				Value: strconv.FormatUint(s.Syncing.KnownStates, 10),
+				Short: true,
+			},
+		}
 	}
 
 	msg := &slack.WebhookMessage{
 		Attachments: []slack.Attachment{
 			slack.Attachment{
-				Color: color,
-				Fields: []slack.AttachmentField{
-					slack.AttachmentField{
-						Title: "Latest Block",
-						Value: s.Block.Number().String(),
-						Short: true,
-					},
-					slack.AttachmentField{
-						Title: "Received At",
-						Value: prettyTime.Format(time.Unix(s.Block.Time().Int64(), 0)),
-						Short: true,
-					},
-				},
+				Color:     color,
+				Fields:    fields,
 				Pretext:   "Ethereum Node Status",
 				Title:     fmt.Sprintf("Node %d", s.ID+1),
 				TitleLink: s.URL,
