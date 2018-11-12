@@ -8,6 +8,11 @@ Sends Slack incoming webhook about Geth node syncing status.
     <img src="https://i.imgur.com/N6dKA0C.png" width="50%" height="50%" alt="Screenshot" title="Example usage">
 </p>
 
+# Building
+
+    $ git clone github.com/pavel-kiselyov/syncing-notifier
+    $ cd syncing-notifier && make build
+
 # Usage
 
 ```
