@@ -4,6 +4,6 @@ build:
 	cd cmd && go build -o syncing-notifier
 
 release:
-	goreleaser --skip-publish
+	goreleaser --rm-dist --skip-publish
 
 .PHONY: build release
