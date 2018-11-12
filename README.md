@@ -4,7 +4,9 @@
 
 Sends Slack incoming webhook about Geth node syncing status.
 
-![Screenshot](media/screenshot.png?raw=true "Screenshot")
+<p align="center">
+    <img src="https://i.imgur.com/N6dKA0C.png" width="50%" height="50%">
+</p>
 
 # Usage
 
