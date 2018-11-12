@@ -5,7 +5,7 @@
 Sends Slack incoming webhook about Geth node syncing status.
 
 <p align="center">
-    <img src="https://i.imgur.com/N6dKA0C.png" width="50%" height="50%">
+    <img src="https://i.imgur.com/N6dKA0C.png" width="50%" height="50%" alt="Screenshot" title="Example usage">
 </p>
 
 # Usage
