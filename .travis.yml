@@ -3,8 +3,5 @@ language: go
 go:
   - "1.11.x"
 
-install:
-  - make install
-
 script:
-  - make build test
+  - make build
