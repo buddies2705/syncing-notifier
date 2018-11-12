@@ -15,4 +15,5 @@ require (
 	github.com/syndtr/goleveldb v0.0.0-20181105012736-f9080354173f // indirect
 	github.com/urfave/cli v1.20.0
 	golang.org/x/net v0.0.0-20181108082009-03003ca0c849 // indirect
+	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 )
