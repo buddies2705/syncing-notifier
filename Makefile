@@ -3,4 +3,7 @@ export GO111MODULE=on
 build:
 	cd cmd && go build -o syncing-notifier
 
-.PHONY: build
+release:
+	goreleaser --skip-publish
+
+.PHONY: build release
