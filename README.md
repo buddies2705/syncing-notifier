@@ -24,6 +24,7 @@ COMMANDS:
      help, h  Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
+   --oneshot            send a single notification and quit
    --interval value     notifications interval (ms) (default: 60000)
    --webhook-url value  Slack incoming webhook URL
    --nodes value        Ethereum node RPC entrypoints
