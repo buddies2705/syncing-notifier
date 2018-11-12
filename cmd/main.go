@@ -56,6 +56,6 @@ func main() {
 	}
 
 	if err := app.Run(os.Args); err != nil {
-		log.Fatalf("Error runnign notifier: %s", err.Error())
+		log.Fatalf("Error running notifier: %s", err.Error())
 	}
 }
